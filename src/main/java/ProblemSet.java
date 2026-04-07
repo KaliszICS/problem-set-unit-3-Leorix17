@@ -2,7 +2,7 @@
 * File: Email Validator and Parser
 * Author: Leo
 * Date Created:	April 5, 2026
-* Date Last Modified: April 6, 2026
+* Date Last Modified: April 7, 2026
 */
 
 import java.util.Scanner;
@@ -34,7 +34,7 @@ public class ProblemSet {
 			email1 = input;
 			email2 = "";
 		}
-
+		
 		//validates both emails
 		String result1 = basicEmailValidation(email1);
 		String result2 = basicEmailValidation(email2);
@@ -43,43 +43,56 @@ public class ProblemSet {
 		
 	}
 
-	//extracts local and domain parts for valid emails
+	//extracts local and domain parts for valid emails and formats the email, local, domain and validation result
 	public static String formatter(String email, String result) {
 		if (result.startsWith("Valid")) {
 			int atIndex = email.indexOf("@"); 
 			String local = email.substring(0, atIndex); 
 			String domain = email.substring(atIndex + 1);
+
 			return email + ": " + result + " | Local: " + local + " | Domain: " + domain;
 		}
 
 		return email + ": " + result; 
 	}	
 
+	//checks all validation types
 	public static String basicEmailValidation(String email) {
 		//checks if email contains @ symbol
-		if (email.contains("@") == false) {
+		if (!email.contains("@")) {
 			return "Invalid: Missing @";
-		}
-
-		//checks if email has more than 1 @ symbol
-		else if (email.indexOf("@") != email.lastIndexOf("@")) {
-			return "Invalid: Multiple @";
-		}
-
-		//checks if email starts or ends with "."
-		if (email.startsWith(".") || email.endsWith(".")) {
-			return "Invalid: Starts or ends with dot";
-		}
-
-		//checks if email contains spaces
-		if (email.contains(" ")) {
-			return "Invalid: Contains spaces";
 		}
 
 		//splits local, domain, and domain extension parts of email into variables
 		String local = email.substring(0, email.indexOf("@"));
 		String domain = email.substring(email.indexOf("@") + 1);
 		String domainExtension = email.substring(email.lastIndexOf(".") + 1);
+		domain = domain.toLowerCase();
+
+		if (domain.equals("gmail.com")) {
+			email = email.replaceAll("\\.", "");
+		}
+		
+		//checks if email has more than 1 @ symbol
+		else if (email.indexOf("@") != email.lastIndexOf("@")) {
+			return "Invalid: Multiple @";
+		}
+
+		//checks if email starts or ends with ".", "+" or "_"
+		if (email.startsWith(".") || email.endsWith(".")) {
+			if (email.startsWith("+") || email.endsWith("+")) {
+				if (email.startsWith("_") || email.endsWith("_")) {
+					return "Invalid: starts or ends with underscore";
+				}
+				return "Invalid: Starts or ends with plus";
+			}
+			return "Invalid: Starts or ends with dot";	
+		}	
+		
+		//checks if email contains spaces
+		if (email.contains(" ")) {
+			return "Invalid: Contains spaces";
+		}
 
 		//checks if local is between 1-64 characters
 		if (local.length() < 1) {
@@ -91,7 +104,7 @@ public class ProblemSet {
 		}
 
 		//checks if domain contains dot
-		if (domain.contains(".") == false) {
+		if (!domain.contains(".")) {
 			return "Invalid: No dot in domain";
 		}
 
@@ -113,12 +126,10 @@ public class ProblemSet {
 		//checks if email is Gmail normalized
 		domain = domain.toLowerCase();
 		if (domain.equals("gmail.com")) {
-			if(local.contains(".")) {
 			return "Valid (Gmail normalized)";
-			}
 		}
 
-		//if all if statements are false return "Valid"
+		//if passes all previous statements return "Valid"
 		return "Valid";
 	}
 }
