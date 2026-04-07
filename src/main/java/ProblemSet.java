@@ -69,30 +69,33 @@ public class ProblemSet {
 		String domainExtension = email.substring(email.lastIndexOf(".") + 1);
 		domain = domain.toLowerCase();
 
+		//removes dot if email is gmail normalized for validation
 		if (domain.equals("gmail.com")) {
-			email = email.replaceAll("\\.", "");
+			email = local.replaceAll("\\.", "");
 		}
-		
+
 		//checks if email has more than 1 @ symbol
-		else if (email.indexOf("@") != email.lastIndexOf("@")) {
+		if (email.indexOf("@") != email.lastIndexOf("@")) {
 			return "Invalid: Multiple @";
 		}
 
 		//checks if email starts or ends with ".", "+" or "_"
 		if (email.startsWith(".") || email.endsWith(".")) {
-			if (email.startsWith("+") || email.endsWith("+")) {
-				if (email.startsWith("_") || email.endsWith("_")) {
-					return "Invalid: starts or ends with underscore";
-				}
-				return "Invalid: Starts or ends with plus";
-			}
-			return "Invalid: Starts or ends with dot";	
-		}	
+			return "Invalid: starts or ends with dot";
+		}
+
+		if (email.startsWith("+") || email.endsWith("+")) {
+			return "Invalid: Starts or ends with plus";
+		}
+		
+		if (email.startsWith("_") || email.endsWith("_")) {
+			return "Invalid: Starts or ends with underscore";	
+		}
 		
 		//checks if email contains spaces
-		if (email.contains(" ")) {
-			return "Invalid: Contains spaces";
-		}
+				if (email.contains(" ")) {
+					return "Invalid: Contains spaces";
+				}
 
 		//checks if local is between 1-64 characters
 		if (local.length() < 1) {
@@ -114,13 +117,17 @@ public class ProblemSet {
 		}
 
 		//checks if domain after last dot is between 2-6 characters
-		if (domainExtension.length() < 2 || domainExtension.length() > 6) {
-			return "Invalid: Invalid domain extension length";
+		if (domainExtension.length() < 2) {
+			return "Invalid: Domain extension too short";
+		}
+
+		else if (domainExtension.length() > 6) {
+			return "Invalid: Domain extension too long";
 		}
 		
 		//checks if domain contains pluses or underscores
 		if (domain.contains("+") || domain.contains("_")) {
-			return "Invalid: Domain extension contains invalid characters";
+			return "Invalid: Domain contains invalid characters";
 		}
 		
 		//checks if email is Gmail normalized
