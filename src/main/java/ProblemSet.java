@@ -4,6 +4,7 @@
 * Date Created:	April 5, 2026
 * Date Last Modified: April 6, 2026
 */
+
 import java.util.Scanner;
 public class ProblemSet {
 	public static void main(String args[]) {
@@ -14,8 +15,8 @@ public class ProblemSet {
 	}
 
 	public static String emailValidator(String input) {
-		String email1 = "";
-		String email2 = "";
+		String email1;
+		String email2;
 
 		if (input.contains(", ")) { //checks if emails are split by ", "
 			int commaIndex = input.indexOf(", ");
@@ -25,8 +26,8 @@ public class ProblemSet {
 
 		else if (input.contains(",")) { //checks if emails are split by ","
 			int commaIndex = input.indexOf(",");
-			email1 = input.substring(0, commaIndex); //gets first email
-			email2 = input.substring(commaIndex + 1); //gets second email
+			email1 = input.substring(0, commaIndex); 
+			email2 = input.substring(commaIndex + 1); 
 		}
 
 		else { //if there is no "," at all there is no second email
@@ -50,6 +51,7 @@ public class ProblemSet {
 			String domain = email.substring(atIndex + 1);
 			return email + ": " + result + " | Local: " + local + " | Domain: " + domain;
 		}
+
 		return email + ": " + result; 
 	}	
 
@@ -93,6 +95,7 @@ public class ProblemSet {
 			return "Invalid: No dot in domain";
 		}
 
+		//checks if domain starts with dot
 		if (domain.startsWith(".")) {
 			return "Invalid: Domain starts with dot";
 		}
@@ -114,6 +117,8 @@ public class ProblemSet {
 			return "Valid (Gmail normalized)";
 			}
 		}
+
+		//if all if statements are false return "Valid"
 		return "Valid";
 	}
 }
